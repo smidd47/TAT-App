@@ -1,37 +1,38 @@
 import React, { Component } from 'react';
 import { FlatList } from 'react-native';
-import { ListItem } from 'react-native-elements';
-import { RESULTS } from '../shared/results';
+import { Tile } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
+
+const mapStateToProps = state => {
+    return {
+        results: state.results
+    };
+};
 
 class Directory extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            results: RESULTS
-        };
-    }
-
     static navigationOptions = {
-        title: 'Directory'
+        title: 'TAT Champs'
     }
 
     render() {
         const { navigate } = this.props.navigation;
         const renderDirectoryItem = ({item}) => {
             return (
-                <ListItem
+                <Tile
                     title={item.name}
-                    subtitle={item.description}
+                    caption={item.description}
+                    featured
                     onPress={() => navigate('ResultInfo', { resultId: item.id })}
-                    leftAvatar={{ source: require('./images/tat-logo.jpg')}}
+                    imageSrc={{uri: baseUrl + item.image}}
                 />
             );
         };
 
         return (
             <FlatList
-                data={this.state.results}
+                data={this.props.results.results}
                 renderItem={renderDirectoryItem}
                 keyExtractor={item => item.id.toString()}
             />
@@ -39,4 +40,4 @@ class Directory extends Component {
     }
 }
 
-export default Directory;
+export default connect(mapStateToProps)(Directory);

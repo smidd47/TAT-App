@@ -4,13 +4,21 @@ import Directory from './DirectoryComponent';
 import ResultInfo from './ResultInfoComponent';
 import About from './AboutComponent';
 import Contact from './ContactComponent';
-import { View, Platform, StyleSheet, Text, ScrollView, Image } from 'react-native';
+import { View, Platform, StyleSheet, ScrollView, Image } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator, DrawerItems } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
 import Splash from '../src/Splash';
 import { Icon } from 'react-native-elements';
 import SafeAreaView from 'react-native-safe-area-view';
+import { connect } from 'react-redux';
+import { fetchResults, fetchPromotions, fetchPartners } from '../redux/ActionCreators';
+
+const mapDispatchToProps = {
+        fetchResults,
+        fetchPromotions,
+        fetchPartners
+};
 
 const DirectoryNavigator = createStackNavigator(
     {
@@ -195,6 +203,11 @@ const MainNavigator = createDrawerNavigator(
 const AppNavigator = createAppContainer(MainNavigator)
 
 class Main extends Component {
+    componentDidMount() {
+        this.props.fetchResults();
+        this.props.fetchPromotions();
+        this.props.fetchPartners();
+    }
     render() {
         return (
             <View style={{
@@ -233,4 +246,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default Main;
+export default connect(null, mapDispatchToProps)(Main);
