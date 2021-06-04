@@ -8,6 +8,7 @@ import { View, Platform } from 'react-native';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createDrawerNavigator } from 'react-navigation-drawer';
 import { createAppContainer } from 'react-navigation';
+import Splash from '../src/Splash';
 
 
 const DirectoryNavigator = createStackNavigator(
@@ -31,6 +32,7 @@ const DirectoryNavigator = createStackNavigator(
 
 const HomeNavigator = createStackNavigator(
     {
+        Splash: { screen: Splash },
         Home: { screen: Home }
     },
     {
