@@ -15,7 +15,7 @@ function RenderResult({result}) {
         return (
             <Card 
                 featuredTitle={result.name}
-                image={{source: {uri: baseUrl + result.image}}}
+                image={{uri: baseUrl + result.image}}
             >
                 <Text style={{margin: 10}}>
                     {result.description}
