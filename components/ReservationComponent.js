@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, ScrollView, StyleSheet,
-    Picker, Switch, Button } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, Picker, Switch, Button, Modal } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 class Reservation extends Component {
@@ -12,7 +11,8 @@ class Reservation extends Component {
             bowlers: 1,
             stayIn: false,
             date: new Date(),
-            showCalendar: false
+            showCalendar: false,
+            showModal: false
         };
     }
 
@@ -20,13 +20,22 @@ class Reservation extends Component {
         title: 'Reserve Your Squad'
     }
 
+    toggleModal() {
+        this.setState({showModal: !this.state.showModal});
+    }
+
     handleReservation() {
         console.log(JSON.stringify(this.state));
+        this.toggleModal();
+    }
+
+    resetForm() {
         this.setState({
             bowlers: 1,
             stayIn: false,
             date: new Date(),
-            showCalendar: false     
+            showCalendar: false,
+            showModal: false
         });
     }
 
@@ -52,9 +61,9 @@ class Reservation extends Component {
                     <Text style={styles.formLabel}>Staying At The Orleans?</Text>
                     <Switch
                         style={styles.formItem}
-                        value={this.state.hikeIn}
+                        value={this.state.stayIn}
                         trackColor={{true: '#900507', false: null}}
-                        onValueChange={value => this.setState({hikeIn: value})}
+                        onValueChange={value => this.setState({stayIn: value})}
                     />
                 </View>
                 <View style={styles.formRow}>
@@ -87,6 +96,33 @@ class Reservation extends Component {
                         accessibilityLabel='Tap me to search for available squads to reserve'
                     />
                 </View>
+                <Modal
+                    animationType={'slide'}
+                    transparent={false}
+                    visible={this.state.showModal}
+                    onRequestClose={() => this.toggleModal()}
+                >
+                    <View style={styles.modal}>
+                        <Text style={styles.modalTitle}>Search Squad Reservations</Text>
+                        <Text style={styles.modalText}>
+                            Number of Bowlers: {this.state.bowlers}
+                        </Text>
+                        <Text style={styles.modalText}>
+                            Staying At The Orleans?: {this.state.stayIn ? 'Yes' : 'No'}
+                        </Text>
+                        <Text style={styles.modalText}>
+                            Date: {this.state.date.toLocaleDateString('en-US')}
+                        </Text>
+                        <Button
+                            onPress={() => {
+                                this.toggleModal();
+                                this.resetForm();
+                            }}
+                            color='#900507'
+                            title='Close'
+                        />
+                    </View>
+                </Modal>
             </ScrollView>
         );
     }
@@ -106,6 +142,22 @@ const styles = StyleSheet.create({
     },
     formItem: {
         flex: 1
+    },
+    modal: { 
+        justifyContent: 'center',
+        margin: 20
+    },
+    modalTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        backgroundColor: '#900507',
+        textAlign: 'center',
+        color: '#fff',
+        marginBottom: 20
+    },
+    modalText: {
+        fontSize: 18,
+        margin: 10
     }
 });
 
