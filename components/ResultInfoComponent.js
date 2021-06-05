@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { Card } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { baseUrl } from '../shared/baseUrl';
+import * as Animatable from 'react-native-animatable';
 
 const mapStateToProps = state => {
     return {
@@ -10,17 +11,22 @@ const mapStateToProps = state => {
     };
 };
 
-function RenderResult({result}) {
+function RenderResult(props) {
+
+    const {result} = props;
+
     if (result) {
         return (
-            <Card 
-                featuredTitle={result.name}
-                image={{uri: baseUrl + result.image}}
-            >
-                <Text style={{margin: 10}}>
-                    {result.description}
-                </Text>
-            </Card>
+            <Animatable.View animation='fadeInDown' duration={2000} delay={1000}>
+                <Card 
+                    featuredTitle={result.name}
+                    image={{uri: baseUrl + result.image}}
+                >
+                    <Text style={{margin: 10}}>
+                        {result.description}
+                    </Text>
+                </Card>
+            </Animatable.View>
         );
     }
     return <View />;
